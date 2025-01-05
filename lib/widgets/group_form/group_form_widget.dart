@@ -55,7 +55,7 @@ class _GroupNameWidget extends StatelessWidget {
     final model = GroupFormWidgetModelProvider.read(context)?.model;
     return TextField(
       onChanged: (value) => model?.groupName = value,
-      onEditingComplete: () => model?.saveGroup(context),
+      // onEditingComplete: () => model?.saveGroup(context),
       autofocus: true,
       decoration: const InputDecoration(
         border: OutlineInputBorder(),
