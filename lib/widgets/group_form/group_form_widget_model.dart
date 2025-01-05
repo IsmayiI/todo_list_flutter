@@ -4,6 +4,7 @@ import 'package:todo_list/domain/entity/group.dart';
 
 class GroupFormWidgetModel {
   var groupName = '';
+
   void saveGroup(BuildContext context) async {
     if (groupName.isEmpty) return;
     if (!Hive.isAdapterRegistered(1)) {
@@ -43,6 +44,5 @@ class GroupFormWidgetModelProvider extends InheritedWidget {
   }
 
   @override
-  bool updateShouldNotify(GroupFormWidgetModelProvider oldWidget) =>
-      model != oldWidget.model;
+  bool updateShouldNotify(GroupFormWidgetModelProvider oldWidget) => false;
 }

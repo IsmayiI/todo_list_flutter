@@ -21,7 +21,7 @@ class _GroupFormWidgetState extends State<GroupFormWidget> {
 }
 
 class _GroupFormBodyWidget extends StatelessWidget {
-  const _GroupFormBodyWidget({super.key});
+  const _GroupFormBodyWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +30,9 @@ class _GroupFormBodyWidget extends StatelessWidget {
         title: const Text('Новая группа'),
       ),
       body: Center(
-        child: Container(
-          child: const Padding(
-            padding: EdgeInsets.all(16),
-            child: _GroupNameWidget(),
-          ),
+        child: const Padding(
+          padding: EdgeInsets.all(16),
+          child: _GroupNameWidget(),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -48,14 +46,14 @@ class _GroupFormBodyWidget extends StatelessWidget {
 }
 
 class _GroupNameWidget extends StatelessWidget {
-  const _GroupNameWidget({super.key});
+  const _GroupNameWidget();
 
   @override
   Widget build(BuildContext context) {
     final model = GroupFormWidgetModelProvider.read(context)?.model;
+
     return TextField(
       onChanged: (value) => model?.groupName = value,
-      // onEditingComplete: () => model?.saveGroup(context),
       autofocus: true,
       decoration: const InputDecoration(
         border: OutlineInputBorder(),

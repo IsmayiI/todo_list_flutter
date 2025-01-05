@@ -18,7 +18,7 @@ class _GroupsWidgetState extends State<GroupsWidget> {
 }
 
 class _GroupsBodyWidget extends StatelessWidget {
-  const _GroupsBodyWidget({super.key});
+  const _GroupsBodyWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +36,12 @@ class _GroupsBodyWidget extends StatelessWidget {
 }
 
 class _GroupListWidget extends StatelessWidget {
-  const _GroupListWidget({super.key});
+  const _GroupListWidget();
 
   @override
   Widget build(BuildContext context) {
     final groupsCount = GroupsModelProvider.watch(context).groups.length;
+
     return ListView.separated(
         itemCount: groupsCount,
         itemBuilder: (BuildContext context, int index) {
@@ -62,8 +63,8 @@ class _GroupListRowWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = GroupsModelProvider.read(context);
-    final group = model!.groups[index];
+    final model = GroupsModelProvider.read(context)!;
+    final group = model.groups[index];
 
     return Slidable(
       endActionPane: ActionPane(
@@ -82,7 +83,7 @@ class _GroupListRowWidget extends StatelessWidget {
       child: ListTile(
         title: Text(group.name),
         trailing: const Icon(Icons.chevron_right),
-        onTap: null,
+        onTap: () => model.openTasks(context, index),
       ),
     );
   }

@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo_list/domain/entity/group.dart';
+import 'package:todo_list/domain/entity/task.dart';
 
 class GroupsModel extends ChangeNotifier {
   var _groups = <Group>[];
@@ -15,11 +18,24 @@ class GroupsModel extends ChangeNotifier {
     Navigator.of(context).pushNamed('/groups/form');
   }
 
+  void openTasks(BuildContext context, int index) async {
+    if (!Hive.isAdapterRegistered(1)) {
+      Hive.registerAdapter(GroupAdapter());
+    }
+    final box = await Hive.openBox<Group>('groups_box');
+    final groupKey = box.keyAt(index) as int;
+
+    unawaited(
+      Navigator.of(context).pushNamed('/groups/tasks', arguments: groupKey),
+    );
+  }
+
   void deleteGroup(int index) async {
     if (!Hive.isAdapterRegistered(1)) {
       Hive.registerAdapter(GroupAdapter());
     }
-    var box = await Hive.openBox<Group>('groups_box');
+    final box = await Hive.openBox<Group>('groups_box');
+    await box.getAt(index)?.tasks?.deleteAllFromHive();
     await box.deleteAt(index);
   }
 
@@ -32,7 +48,11 @@ class GroupsModel extends ChangeNotifier {
     if (!Hive.isAdapterRegistered(1)) {
       Hive.registerAdapter(GroupAdapter());
     }
-    var box = await Hive.openBox<Group>('groups_box');
+    final box = await Hive.openBox<Group>('groups_box');
+    if (!Hive.isAdapterRegistered(2)) {
+      Hive.registerAdapter(TaskAdapter());
+    }
+    Hive.openBox<Task>('tasks_box');
     _readGroupsFromHive(box);
     box.listenable().addListener(() => _readGroupsFromHive(box));
   }
