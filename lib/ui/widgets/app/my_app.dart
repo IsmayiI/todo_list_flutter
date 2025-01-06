@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: false,
       ),
       routes: Navigation.routes,
+      onGenerateRoute: Navigation.onGenerateRoute,
       initialRoute: Navigation.initialRoute,
     );
   }

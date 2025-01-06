@@ -9,9 +9,26 @@ abstract class Navigation {
   static final initialRoute = RouteNames.groups;
 
   static final routes = <String, Widget Function(BuildContext)>{
-    RouteNames.groups: (context) => const GroupsWidget(),
-    RouteNames.groupsForm: (context) => const GroupFormWidget(),
-    RouteNames.groupsTasks: (context) => const TasksWidget(),
-    RouteNames.groupsTasksForm: (context) => const TaskFormWidget(),
+    RouteNames.groups: (_) => const GroupsWidget(),
+    RouteNames.groupsForm: (_) => const GroupFormWidget(),
   };
+
+  static Route<Object> onGenerateRoute(RouteSettings settings) {
+    switch (settings.name) {
+      case RouteNames.groupsTasks:
+        final groupKey = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => TasksWidget(groupKey: groupKey),
+        );
+
+      case RouteNames.groupsTasksForm:
+        final groupKey = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => TaskFormWidget(groupKey: groupKey),
+        );
+
+      default:
+        return MaterialPageRoute(builder: (_) => const Text('404'));
+    }
+  }
 }
