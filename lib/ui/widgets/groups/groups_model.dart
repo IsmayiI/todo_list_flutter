@@ -1,5 +1,4 @@
-import 'dart:async';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo_list/domain/data_provider/box_manager.dart';
@@ -9,6 +8,7 @@ import 'package:todo_list/ui/widgets/tasks/tasks_model.dart';
 
 class GroupsModel extends ChangeNotifier {
   late final Future<Box<Group>> _box;
+  ValueListenable<Object>? _listenableBox;
   var _groups = <Group>[];
 
   List<Group> get groups => _groups.toList();
@@ -45,7 +45,8 @@ class GroupsModel extends ChangeNotifier {
   Future<void> _setUp() async {
     _box = BoxManager.instance.openGroupBox();
     await _readGroupsFromHive();
-    (await _box).listenable().addListener(_readGroupsFromHive);
+    _listenableBox = (await _box).listenable();
+    _listenableBox?.addListener(_readGroupsFromHive);
   }
 }
 

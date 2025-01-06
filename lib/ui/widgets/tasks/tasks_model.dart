@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo_list/domain/data_provider/box_manager.dart';
@@ -6,6 +7,7 @@ import 'package:todo_list/ui/navigation/route_names.dart';
 
 class TasksModel extends ChangeNotifier {
   TasksConfiguration config;
+  ValueListenable<Object>? _listenableBox;
   late final Future<Box<Task>> _box;
   var _tasks = <Task>[];
 
@@ -38,7 +40,15 @@ class TasksModel extends ChangeNotifier {
   Future<void> _setUp() async {
     _box = BoxManager.instance.openTaskBox(config.groupKey);
     await _readTasksFromHive();
-    (await _box).listenable().addListener(_readTasksFromHive);
+    _listenableBox = (await _box).listenable();
+    _listenableBox?.addListener(_readTasksFromHive);
+  }
+
+  @override
+  Future<void> dispose() async {
+    _listenableBox?.removeListener(_readTasksFromHive);
+    await BoxManager.instance.closeBox((await _box));
+    super.dispose();
   }
 }
 
