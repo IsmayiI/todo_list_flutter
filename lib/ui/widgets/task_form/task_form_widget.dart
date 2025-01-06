@@ -61,7 +61,7 @@ class _TaskTextWidget extends StatelessWidget {
     final model = TaskFormModelProvider.read(context)?.model;
 
     return TextField(
-      onChanged: (value) => model?.taskText = value,
+      onChanged: (value) => model?.taskText = value.trim(),
       autofocus: true,
       maxLines: 10,
       minLines: 3,

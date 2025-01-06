@@ -7,8 +7,10 @@ class BoxManager {
 
   BoxManager._();
 
-  Future<Box<Task>> openTaskBox() async {
-    return _openBox('tasks_box', 2, TaskAdapter());
+  String makeTaskBoxName(int groupKey) => 'tasks_box_$groupKey';
+
+  Future<Box<Task>> openTaskBox(int groupKey) async {
+    return _openBox(makeTaskBoxName(groupKey), 2, TaskAdapter());
   }
 
   Future<Box<Group>> openGroupBox() async {
@@ -24,5 +26,10 @@ class BoxManager {
       Hive.registerAdapter(adapter);
     }
     return Hive.openBox<T>(name);
+  }
+
+  Future<void> closeBox<T>(Box<T> box) async {
+    await box.compact();
+    await box.close();
   }
 }

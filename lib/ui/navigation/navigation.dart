@@ -3,6 +3,7 @@ import 'package:todo_list/ui/navigation/route_names.dart';
 import 'package:todo_list/ui/widgets/group_form/group_form_widget.dart';
 import 'package:todo_list/ui/widgets/groups/groups_widget.dart';
 import 'package:todo_list/ui/widgets/task_form/task_form_widget.dart';
+import 'package:todo_list/ui/widgets/tasks/tasks_model.dart';
 import 'package:todo_list/ui/widgets/tasks/tasks_widget.dart';
 
 abstract class Navigation {
@@ -16,9 +17,9 @@ abstract class Navigation {
   static Route<Object> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case RouteNames.groupsTasks:
-        final groupKey = settings.arguments as int;
+        final config = settings.arguments as TasksConfiguration;
         return MaterialPageRoute(
-          builder: (_) => TasksWidget(groupKey: groupKey),
+          builder: (_) => TasksWidget(config: config),
         );
 
       case RouteNames.groupsTasksForm:
