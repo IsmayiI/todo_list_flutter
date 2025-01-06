@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list/widgets/task_form/task_form_model.dart';
+import 'package:todo_list/ui/widgets/task_form/task_form_model.dart';
 
 class TaskFormWidget extends StatefulWidget {
   const TaskFormWidget({super.key});

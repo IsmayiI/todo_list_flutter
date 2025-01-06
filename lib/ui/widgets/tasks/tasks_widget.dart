@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:todo_list/widgets/tasks/tasks_model.dart';
+import 'package:todo_list/ui/widgets/tasks/tasks_model.dart';
 
 class TasksWidget extends StatefulWidget {
   const TasksWidget({super.key});
