@@ -36,9 +36,8 @@ class _GroupFormBodyWidget extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => GroupFormWidgetModelProvider.read(context)
-            ?.model
-            .saveGroup(context),
+        onPressed: () =>
+            GroupFormWidgetModelProvider.read(context)?.saveGroup(context),
         child: const Icon(Icons.done),
       ),
     );
@@ -50,14 +49,15 @@ class _GroupNameWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = GroupFormWidgetModelProvider.read(context)?.model;
+    final model = GroupFormWidgetModelProvider.watch(context);
 
     return TextField(
-      onChanged: (value) => model?.groupName = value,
+      onChanged: (value) => model.groupName = value,
       autofocus: true,
-      decoration: const InputDecoration(
-        border: OutlineInputBorder(),
+      decoration: InputDecoration(
+        border: const OutlineInputBorder(),
         labelText: 'Название группы',
+        errorText: model.errorText,
       ),
     );
   }

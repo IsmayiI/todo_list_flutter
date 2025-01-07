@@ -33,7 +33,7 @@ class _TaskFormBodyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = TaskFormModelProvider.read(context)?.model;
+    final model = TaskFormModelProvider.read(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -58,17 +58,17 @@ class _TaskTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = TaskFormModelProvider.read(context)?.model;
+    final model = TaskFormModelProvider.watch(context);
 
     return TextField(
-      onChanged: (value) => model?.taskText = value.trim(),
+      onChanged: (value) => model.taskText = value,
       autofocus: true,
       maxLines: 10,
       minLines: 3,
-      textInputAction: TextInputAction.newline,
-      decoration: const InputDecoration(
-        border: OutlineInputBorder(),
+      decoration: InputDecoration(
+        border: const OutlineInputBorder(),
         labelText: 'Задача',
+        errorText: model.errorText,
       ),
     );
   }

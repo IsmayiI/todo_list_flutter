@@ -2,11 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:todo_list/domain/data_provider/box_manager.dart';
 import 'package:todo_list/domain/entity/group.dart';
 
-class GroupFormWidgetModel {
-  var groupName = '';
+class GroupFormWidgetModel extends ChangeNotifier {
+  var _groupName = '';
+  String? errorText;
+
+  set groupName(String value) {
+    if (errorText != null && value.trim().isNotEmpty) {
+      errorText = null;
+      notifyListeners();
+    }
+    _groupName = value;
+  }
 
   void saveGroup(BuildContext context) async {
-    if (groupName.isEmpty) return;
+    final groupName = _groupName.trim();
+    if (groupName.isEmpty) {
+      errorText = 'Введите название группы';
+      notifyListeners();
+      return;
+    }
 
     final group = Group(name: groupName);
     final box = await BoxManager.instance.openGroupBox();
@@ -15,32 +29,31 @@ class GroupFormWidgetModel {
   }
 }
 
-class GroupFormWidgetModelProvider extends InheritedWidget {
+class GroupFormWidgetModelProvider
+    extends InheritedNotifier<GroupFormWidgetModel> {
+  final GroupFormWidgetModel model;
+
   const GroupFormWidgetModelProvider({
     super.key,
     required this.model,
     required super.child,
-  });
+  }) : super(notifier: model);
 
-  final GroupFormWidgetModel model;
-
-  static GroupFormWidgetModelProvider? maybeOf(BuildContext context) {
+  static GroupFormWidgetModel? maybeOf(BuildContext context) {
     return context
-        .dependOnInheritedWidgetOfExactType<GroupFormWidgetModelProvider>();
+        .dependOnInheritedWidgetOfExactType<GroupFormWidgetModelProvider>()
+        ?.model;
   }
 
-  static GroupFormWidgetModelProvider watch(BuildContext context) {
-    final GroupFormWidgetModelProvider? result = maybeOf(context);
+  static GroupFormWidgetModel watch(BuildContext context) {
+    final GroupFormWidgetModel? result = maybeOf(context);
     assert(result != null, 'No GroupFormWidgetModelProvider found in context');
     return result!;
   }
 
-  static GroupFormWidgetModelProvider? read(BuildContext context) {
+  static GroupFormWidgetModel? read(BuildContext context) {
     final element = context.getElementForInheritedWidgetOfExactType<
         GroupFormWidgetModelProvider>();
-    return (element?.widget as GroupFormWidgetModelProvider?);
+    return (element?.widget as GroupFormWidgetModelProvider?)?.model;
   }
-
-  @override
-  bool updateShouldNotify(GroupFormWidgetModelProvider oldWidget) => false;
 }
